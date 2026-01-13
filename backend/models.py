@@ -14,7 +14,7 @@ from sqlalchemy import (
     func,
     text,
 )
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID , ARRAY
 from pgvector.sqlalchemy import Vector
 
 
@@ -67,10 +67,12 @@ class Product(Base):
 
     stock_qty: Mapped[int] = mapped_column(Integer, server_default=text("0"), nullable=False)
 
-    # tags text[] อยู่ใน DB แต่ถ้าไม่อยาก map ตอนนี้ก็ได้
-    # ถ้าจะ map จริง แนะนำใช้ sqlalchemy.dialects.postgresql import ARRAY
-    # แล้วใช้ ARRAY(String). สำหรับ mini ขอข้ามไว้ก่อนให้ชัวร์
-    # tags: Mapped[list[str]] = mapped_column(ARRAY(String), server_default=text("'{}'"), nullable=False)
+    tags: Mapped[list[str]] = mapped_column(
+    ARRAY(String),
+    server_default=text("'{}'"),
+    nullable=False,
+)
+
 
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
