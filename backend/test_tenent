@@ -1,0 +1,18 @@
+from db import SessionLocal
+from crud import create_tenant, get_tenant_by_token
+
+def main():
+    db = SessionLocal()
+    try:
+        tenant_id, token = create_tenant(db, "Demo Shop")
+        print("Created ✅")
+        print("tenant_id:", tenant_id)
+        print("public_token:", token)
+
+        t = get_tenant_by_token(db, token)
+        print("Resolved ✅", t.id, t.name)
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()
